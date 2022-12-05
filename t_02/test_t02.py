@@ -1,5 +1,11 @@
 import pytest
-from .t_02 import GameResult, Option, calculate_score, get_game_result
+from .t_02 import (
+    GameResult,
+    Option,
+    calculate_score,
+    get_game_result,
+    get_score_from_text_line,
+)
 
 
 @pytest.mark.parametrize(
@@ -36,3 +42,10 @@ def test_get_game_score(my_choice, opponent_choice, expected_result):
 )
 def test_calculate_score(result, my_choice, expected_score):
     assert calculate_score(result, my_choice) == expected_score
+
+
+@pytest.mark.parametrize(
+    "text_line, expected_result", [("A Y", 8), ("B X", 1), ("C Z", 6)]
+)
+def test_get_score_from_text_line(text_line, expected_result):
+    assert get_score_from_text_line(text_line) == expected_result
