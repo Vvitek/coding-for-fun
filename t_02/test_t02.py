@@ -6,6 +6,7 @@ from .t_02 import (
     get_game_result,
     get_score_from_text_line,
     get_choice,
+    get_score_from_text_line_result_oponent,
 )
 
 
@@ -50,6 +51,13 @@ def test_calculate_score(result, my_choice, expected_score):
 )
 def test_get_score_from_text_line(text_line, expected_result):
     assert get_score_from_text_line(text_line) == expected_result
+
+
+@pytest.mark.parametrize(
+    "text_line, expected_result", [("A Y", 4), ("B X", 1), ("C Z", 7)]
+)
+def test_get_score_from_text_line_result_oponent(text_line, expected_result):
+    assert get_score_from_text_line_result_oponent(text_line) == expected_result
 
 
 @pytest.mark.parametrize(
