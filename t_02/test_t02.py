@@ -5,6 +5,7 @@ from .t_02 import (
     calculate_score,
     get_game_result,
     get_score_from_text_line,
+    get_choice,
 )
 
 
@@ -49,3 +50,21 @@ def test_calculate_score(result, my_choice, expected_score):
 )
 def test_get_score_from_text_line(text_line, expected_result):
     assert get_score_from_text_line(text_line) == expected_result
+
+
+@pytest.mark.parametrize(
+    "expected_game_result, opponent_choice, expected_result",
+    [
+        (GameResult.WIN, Option.PAPER, Option.SCISSORS),
+        (GameResult.WIN, Option.ROCK, Option.PAPER),
+        (GameResult.WIN, Option.SCISSORS, Option.ROCK),
+        (GameResult.DRAW, Option.PAPER, Option.PAPER),
+        (GameResult.DRAW, Option.ROCK, Option.ROCK),
+        (GameResult.DRAW, Option.SCISSORS, Option.SCISSORS),
+        (GameResult.LOST, Option.PAPER, Option.ROCK),
+        (GameResult.LOST, Option.ROCK, Option.SCISSORS),
+        (GameResult.LOST, Option.SCISSORS, Option.PAPER),
+    ],
+)
+def test_get_choice(expected_game_result, opponent_choice, expected_result):
+    assert get_choice(expected_game_result, opponent_choice) == expected_result

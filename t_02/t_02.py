@@ -20,9 +20,9 @@ mapping_dict = {
     "A": Option.ROCK,
     "B": Option.PAPER,
     "C": Option.SCISSORS,
-    "X": Option.ROCK,
-    "Y": Option.PAPER,
-    "Z": Option.SCISSORS,
+    "X": GameResult.LOST,
+    "Y": GameResult.DRAW,
+    "Z": GameResult.WIN,
 }
 
 
@@ -42,6 +42,10 @@ def get_score_from_text_line(line: str) -> int:
         get_game_result(my_choice=my_choice, opponent_choice=opponent_choice),
         my_choice=my_choice,
     )
+
+
+def get_choice(expected_result: GameResult, opponent_choice: Option) -> Option:
+    return Option.PAPER
 
 
 if __name__ == "__main__":
