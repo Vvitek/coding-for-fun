@@ -44,6 +44,19 @@ def move_creates(
     return current_state
 
 
+def move_multi_creates(
+    current_state: list[list[int]], instructions: list[Instruction]
+) -> list[list[int]]:
+    for instruction in instructions:
+        current_state[instruction.target_stack].extend(
+            current_state[instruction.source_stack][-1 * instruction.amount :]
+        )
+        current_state[instruction.source_stack] = current_state[
+            instruction.source_stack
+        ][: -1 * instruction.amount]
+    return current_state
+
+
 def get_result(current_state: list[list[int]]) -> str:
     return "".join((stack[-1] for stack in current_state))
 
@@ -53,4 +66,4 @@ if __name__ == "__main__":
         diagram, instructions = input_file.read().split("\n\n")
         initial_state = get_stacks_from_diagram(diagram.split("\n"))
         parsed_instructions = parse_instructions(instructions)
-        print(get_result(move_creates(initial_state, parsed_instructions)))
+        print(get_result(move_multi_creates(initial_state, parsed_instructions)))

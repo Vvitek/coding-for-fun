@@ -5,6 +5,7 @@ from t_05 import (
     parse_instructions,
     move_creates,
     get_result,
+    move_multi_creates,
 )
 
 
@@ -81,5 +82,57 @@ def test_move_creates(current_state, instructions, expected_result):
     assert move_creates(current_state, instructions) == expected_result
 
 
-def test_get_result():
-    assert get_result([["C"], ["M"], ["P", "D", "N", "Z"]]) == "CMZ"
+@pytest.mark.parametrize(
+    "current_state, instructions, expected_result",
+    [
+        (
+            [
+                ["Z", "N"],
+                ["M", "C", "D"],
+                ["P"],
+            ],
+            [Instruction(1, 2, 1)],
+            [["Z", "N", "D"], ["M", "C"], ["P"]],
+        ),
+        (
+            [["Z", "N", "D"], ["M", "C"], ["P"]],
+            [Instruction(3, 1, 3)],
+            [[], ["M", "C"], ["P", "Z", "N", "D"]],
+        ),
+        (
+            [[], ["M", "C"], ["P", "Z", "N", "D"]],
+            [Instruction(2, 2, 1)],
+            [["M", "C"], [], ["P", "Z", "N", "D"]],
+        ),
+        (
+            [["M", "C"], [], ["P", "Z", "N", "D"]],
+            [Instruction(1, 1, 2)],
+            [["M"], ["C"], ["P", "Z", "N", "D"]],
+        ),
+        (
+            [
+                ["Z", "N"],
+                ["M", "C", "D"],
+                ["P"],
+            ],
+            [
+                Instruction(a, b, c)
+                for a, b, c in [[1, 2, 1], [3, 1, 3], [2, 2, 1], [1, 1, 2]]
+            ],
+            [["M"], ["C"], ["P", "Z", "N", "D"]],
+        ),
+    ],
+)
+def test_move_multi_creates(current_state, instructions, expected_result):
+    assert move_multi_creates(current_state, instructions) == expected_result
+
+
+@pytest.mark.parametrize(
+    "final_state, expected_result",
+    [
+        ([["M"], ["C"], ["P", "Z", "N", "D"]], "MCD"),
+        ([["C"], ["M"], ["P", "D", "N", "Z"]], "CMZ"),
+    ],
+)
+def test_get_result(final_state, expected_result):
+    assert get_result(final_state) == expected_result
