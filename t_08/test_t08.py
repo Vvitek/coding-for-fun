@@ -1,6 +1,12 @@
 import pytest
 
-from t_08 import get_visible_trees_number, is_visible, GridIndex
+from t_08 import (
+    get_visible_trees_number,
+    is_visible,
+    GridIndex,
+    get_scenic_score,
+    get_overall_scenic_score,
+)
 
 
 test_data = [
@@ -28,6 +34,33 @@ test_data = [
 )
 def test_is_visible(index, expected_result):
     assert is_visible(index, test_data) == expected_result
+
+
+@pytest.mark.parametrize(
+    "index, expected_result",
+    [
+        (GridIndex(row=1, column=2), 4),
+        (GridIndex(row=3, column=2), 8),
+    ],
+)
+def test_get_overall_scenic_score(index, expected_result):
+    assert get_overall_scenic_score(index, test_data) == expected_result
+
+
+@pytest.mark.parametrize(
+    "value, direction, expected_result",
+    [
+        (5, [3], 1),
+        (5, [5, 2], 1),
+        (5, [1, 2], 2),
+        (5, [3, 5, 3], 2),
+        (5, [3, 3], 2),
+        (5, [3], 1),
+        (5, [4, 9], 2),
+    ],
+)
+def test_get_scenic_score(value, direction, expected_result):
+    assert get_scenic_score(value, direction) == expected_result
 
 
 def test_get_visible_trees_number():
